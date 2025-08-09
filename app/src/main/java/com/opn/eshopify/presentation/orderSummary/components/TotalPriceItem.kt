@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.opn.eshopify.R
-import com.opn.eshopify.util.formatCurrency
+import com.opn.eshopify.presentation.util.formatCurrency
 
 @Composable
 fun TotalPrice(

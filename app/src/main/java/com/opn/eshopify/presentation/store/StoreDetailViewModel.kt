@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.opn.eshopify.domain.Result
 import com.opn.eshopify.domain.model.Order
 import com.opn.eshopify.domain.model.Product
-import com.opn.eshopify.util.asTextValue
+import com.opn.eshopify.presentation.util.asTextValue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

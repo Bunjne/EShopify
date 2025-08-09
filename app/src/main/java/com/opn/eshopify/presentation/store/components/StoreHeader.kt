@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.opn.eshopify.R
 import com.opn.eshopify.domain.model.Store
-import com.opn.eshopify.util.formatTime24Hour
+import com.opn.eshopify.presentation.util.formatTime24Hour
 import java.util.Locale
 
 @Composable

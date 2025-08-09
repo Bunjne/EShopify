@@ -1,4 +1,4 @@
-package com.opn.eshopify.util
+package com.opn.eshopify.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector

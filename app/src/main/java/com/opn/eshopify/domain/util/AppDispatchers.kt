@@ -1,4 +1,4 @@
-package com.opn.eshopify.util
+package com.opn.eshopify.domain.util
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

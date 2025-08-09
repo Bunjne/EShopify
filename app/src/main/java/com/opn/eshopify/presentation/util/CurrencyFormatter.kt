@@ -1,4 +1,4 @@
-package com.opn.eshopify.util
+package com.opn.eshopify.presentation.util
 
 import java.text.NumberFormat
 import java.util.Locale

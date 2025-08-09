@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import com.opn.eshopify.R
-import com.opn.eshopify.util.asImageVector
+import com.opn.eshopify.presentation.util.asImageVector
 
 @Composable
 fun QuantityControls(

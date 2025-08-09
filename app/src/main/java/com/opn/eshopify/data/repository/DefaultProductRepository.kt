@@ -7,7 +7,7 @@ import com.opn.eshopify.domain.DataError
 import com.opn.eshopify.domain.Result
 import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.domain.repository.ProductRepository
-import com.opn.eshopify.util.AppDispatchers
+import com.opn.eshopify.domain.util.AppDispatchers
 
 class DefaultProductRepository(
     private val api: ShoppingAPI,

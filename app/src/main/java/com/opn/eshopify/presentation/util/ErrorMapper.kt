@@ -1,4 +1,4 @@
-package com.opn.eshopify.util
+package com.opn.eshopify.presentation.util
 
 import com.opn.eshopify.R
 import com.opn.eshopify.domain.DataError

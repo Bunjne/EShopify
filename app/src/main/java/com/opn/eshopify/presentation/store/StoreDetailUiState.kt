@@ -2,7 +2,7 @@ package com.opn.eshopify.presentation.store
 
 import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.domain.model.Store
-import com.opn.eshopify.util.TextValue
+import com.opn.eshopify.presentation.util.TextValue
 
 data class StoreDetailUiState(
     val store: Store? = null,

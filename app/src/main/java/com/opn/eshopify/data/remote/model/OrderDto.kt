@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OrderDto(
     @SerialName("products") val products: List<ProductDto>,
-    @SerialName("delivery_address") val deliveryAddress: Double,
+    @SerialName("delivery_address") val deliveryAddress: String,
 )

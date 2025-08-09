@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 data class Order(
     val products: List<Product>,
-    val deliveryAddress: Double,
+    val deliveryAddress: String,
 )

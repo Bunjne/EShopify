@@ -16,7 +16,9 @@ class DefaultProductRepository(
 
     override suspend fun getProducts(): Result<List<Product>, DataError> {
         return safeApiCall(appDispatchers.getIODispatcher()) {
-            api.getProducts().map { it.asDomain() }
+            api.getProducts().mapIndexed { index, productDto ->
+                productDto.asDomain(index.toString())
+            }
         }
     }
 }

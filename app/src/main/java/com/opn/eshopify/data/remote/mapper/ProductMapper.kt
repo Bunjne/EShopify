@@ -3,7 +3,8 @@ package com.opn.eshopify.data.remote.mapper
 import com.opn.eshopify.data.remote.model.ProductDto
 import com.opn.eshopify.domain.model.Product
 
-fun ProductDto.asDomain(): Product = Product(
+fun ProductDto.asDomain(id: String): Product = Product(
+    id = id,
     name = name,
     price = price,
     imageUrl = imageUrl,

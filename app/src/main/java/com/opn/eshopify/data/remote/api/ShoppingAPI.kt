@@ -15,6 +15,6 @@ interface ShoppingAPI {
     @GET("/storeinfo")
     suspend fun getStoreDetail(): StoreDto
 
-    @POST("/orders")
+    @POST("/order")
     suspend fun makeOrder(@Body order: OrderDto)
 }

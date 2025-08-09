@@ -16,7 +16,9 @@ fun MainNavHost(
         startDestination = startDestination
     ) {
         composable<Route.StoreDetail> {
-            StoreDetailRoute()
+            StoreDetailRoute(
+                onCheckout = {}
+            )
         }
     }
 }

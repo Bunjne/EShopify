@@ -2,19 +2,21 @@ package com.opn.eshopify.data.remote.mapper
 
 import com.opn.eshopify.data.remote.model.StoreDto
 import com.opn.eshopify.domain.model.Store
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-fun StoreDto.toDomain(): Store = Store(
+fun StoreDto.asDomain(): Store = Store(
     name = name,
     rating = rating,
     openingTime = parseISOTime(openingTime),
     closingTime = parseISOTime(closingTime)
 )
 
+@OptIn(ExperimentalTime::class)
 private fun parseISOTime(timeString: String): LocalTime {
     return try {
         Instant.parse(timeString).toLocalDateTime(TimeZone.UTC).time

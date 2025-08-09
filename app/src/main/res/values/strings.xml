@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">EShopify</string>
+    <string name="products">Products</string>
+    <string name="total">Total</string>
+    <string name="open">Open</string>
+    <string name="checkout">Checkout</string>
+    <string name="no_products_available">No products available</string>
+    <string name="check_back_later">Check back later for new products</string>
+    <string name="error_title">Oops! Something went wrong.</string>
+    <string name="store_hours_format">Open: %1$s - %2$s</string>
+    <string name="retry">Retry</string>
+
+    <!--error messages-->
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_unexpected">An unexpected error occurred</string>
+    <string name="error_unauthorized">You are not authorized to access this resource</string>
+    <string name="error_not_found">The requested resource was not found</string>
+    <string name="error_forbidden">You do not have permission to access this resource</string>
+    <string name="error_timeout">The request timed out</string>
+    <string name="error_internal_server_error">The server encountered an internal error</string>
+    <string name="error_service_unavailable">The server is unavailable</string>
+    <string name="error_bad_request">Bad request</string>
 </resources>

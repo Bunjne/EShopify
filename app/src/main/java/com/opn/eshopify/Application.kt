@@ -2,6 +2,7 @@ package com.opn.eshopify
 
 import android.app.Application
 import com.opn.eshopify.di.apiModule
+import com.opn.eshopify.di.appModule
 import com.opn.eshopify.di.repositoryModule
 import com.opn.eshopify.di.useCaseModule
 import com.opn.eshopify.di.viewModelModule
@@ -18,6 +19,7 @@ class Application : Application() {
             androidContext(this@Application)
             modules(
                 listOf(
+                    appModule,
                     apiModule,
                     repositoryModule,
                     useCaseModule,

@@ -3,9 +3,8 @@ package com.opn.eshopify.presentation.store
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.opn.eshopify.domain.Result
+import com.opn.eshopify.domain.model.Order
 import com.opn.eshopify.domain.model.Product
-import com.opn.eshopify.domain.usecase.GetProductsUseCase
-import com.opn.eshopify.domain.usecase.GetStoreDetailUseCase
 import com.opn.eshopify.util.asTextValue
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StoreDetailViewModel(
-    private val getStoreDetailUseCase: GetStoreDetailUseCase,
-    private val getProductsUseCase: GetProductsUseCase,
+    private val useCases: StoreDetailUseCases,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StoreDetailUiState())
@@ -35,8 +33,8 @@ class StoreDetailViewModel(
         }
 
         viewModelScope.launch {
-            val storeDetailDeferred = async { getStoreDetailUseCase.invoke() }
-            val productsDeferred = async { getProductsUseCase.invoke() }
+            val storeDetailDeferred = async { useCases.getStoreDetail.invoke() }
+            val productsDeferred = async { useCases.getProducts.invoke() }
 
             // Await all to show result at the same time
             val storeResult = storeDetailDeferred.await()
@@ -81,19 +79,48 @@ class StoreDetailViewModel(
     fun decrementProductQuantity(product: Product) {
         _uiState.update { currentState ->
             val currentQuantity = currentState.selectedProducts[product] ?: 0
+            val updatedSelectedProducts = currentState.selectedProducts.toMutableMap()
             if (currentQuantity <= 1) {
-                // If quantity is 1 or less, remove the product
-                val updatedSelectedProducts = currentState.selectedProducts.toMutableMap().apply {
-                    remove(product)
-                }
-                currentState.copy(selectedProducts = updatedSelectedProducts)
+                updatedSelectedProducts.remove(product)
             } else {
-                // Otherwise decrement the quantity
-                val updatedSelectedProducts = currentState.selectedProducts.toMutableMap().apply {
-                    put(product, currentQuantity - 1)
-                }
-                currentState.copy(selectedProducts = updatedSelectedProducts)
+                updatedSelectedProducts.put(product, currentQuantity - 1)
             }
+            currentState.copy(selectedProducts = updatedSelectedProducts)
+        }
+    }
+
+    fun updateDeliveryAddress(address: String) {
+        _uiState.update {
+            it.copy(deliveryAddress = address)
+        }
+    }
+
+    fun placeOrder() {
+        _uiState.update {
+            it.copy(
+                isLoading = true,
+                error = null
+            )
+        }
+
+        viewModelScope.launch {
+            val order = Order(
+                products = uiState.value.selectedProducts.keys.toList(),
+                deliveryAddress = uiState.value.deliveryAddress,
+            )
+            when (val result = useCases.placeOrder(order)) {
+                is Result.Success -> _uiState.update {
+                    it.copy(isOrderPlaced = true)
+                }
+
+                is Result.Error -> _uiState.update {
+                    it.copy(error = result.error.asTextValue())
+                }
+            }
+        }
+
+        _uiState.update {
+            it.copy(isLoading = false)
         }
     }
 }

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">EShopify</string>
+
+    <!-- Store Screen -->
     <string name="products">Products</string>
     <string name="total">Total</string>
     <string name="open">Open</string>
@@ -20,4 +22,22 @@
     <string name="error_internal_server_error">The server encountered an internal error</string>
     <string name="error_service_unavailable">The server is unavailable</string>
     <string name="error_bad_request">Bad request</string>
+    
+    <!-- Order Summary Screen -->
+    <string name="order_summary">Order Summary</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="selected_products">Selected Products</string>
+    <string name="no_products_selected">No products selected</string>
+    <string name="total_price">Total Price</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="enter_delivery_address">Enter your delivery address</string>
+    <string name="place_order">Place Order</string>
+    <string name="price_per_item">Price: %1$s</string>
+    <string name="quantity_x">Quantity: %1$d</string>
+    <string name="subtotal_price">Subtotal: %1$s</string>
+    
+    <!-- Order Success Screen -->
+    <string name="order_success_title">Order Placed Successfully!</string>
+    <string name="order_success_message">Thank you for your order. Your items will be delivered soon.</string>
+    <string name="back_to_store">Back to Store</string>
 </resources>

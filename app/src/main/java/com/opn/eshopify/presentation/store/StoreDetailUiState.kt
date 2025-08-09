@@ -9,11 +9,13 @@ data class StoreDetailUiState(
     val products: List<Product> = emptyList(),
     val selectedProducts: Map<Product, Int> = emptyMap(),
     val isLoading: Boolean = false,
-    val error: TextValue? = null
+    val error: TextValue? = null,
+    val deliveryAddress: String = "",
+    val isOrderPlaced: Boolean = false
 ) {
     val totalPrice: Double
-        get() = selectedProducts.entries.sumOf { (product, quantity) -> 
-            product.price * quantity 
+        get() = selectedProducts.entries.sumOf { (product, quantity) ->
+            product.price * quantity
         }
 
     val hasSelectedProducts: Boolean

@@ -25,12 +25,11 @@ import com.opn.eshopify.presentation.store.components.EmptyProductsList
 import com.opn.eshopify.presentation.store.components.ErrorMessage
 import com.opn.eshopify.presentation.store.components.ProductItem
 import com.opn.eshopify.presentation.store.components.StoreHeader
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StoreDetailRoute(
     onCheckout: () -> Unit,
-    viewModel: StoreDetailViewModel = koinViewModel()
+    viewModel: StoreDetailViewModel,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -95,7 +94,10 @@ fun StoreDetailScreen(
                             EmptyProductsList()
                         }
                     } else {
-                        items(uiState.products) { product ->
+                        items(
+                            items = uiState.products,
+                            key = { product -> product.id }
+                        ) { product ->
                             ProductItem(
                                 product = product,
                                 quantity = uiState.selectedProducts[product] ?: 0,

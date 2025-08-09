@@ -1,23 +1,78 @@
 package com.opn.eshopify.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.opn.eshopify.presentation.app.MainAppState
+import com.opn.eshopify.presentation.orderSuccess.OrderSuccessRoute
+import com.opn.eshopify.presentation.orderSummary.SummaryRoute
 import com.opn.eshopify.presentation.store.StoreDetailRoute
+import com.opn.eshopify.presentation.store.StoreDetailViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainNavHost(
     appState: MainAppState,
-    startDestination: Route = Route.StoreDetail
+    startDestination: Route = Route.Store
 ) {
     NavHost(
         navController = appState.navController,
         startDestination = startDestination
     ) {
-        composable<Route.StoreDetail> {
-            StoreDetailRoute(
-                onCheckout = {}
+        navigation<Route.Store>(
+            startDestination = Route.StoreDetail
+        ) {
+            composable<Route.StoreDetail> {
+                val parentEntry = remember(it) {
+                    appState.navController.getBackStackEntry(Route.Store)
+                }
+
+                val viewModel =
+                    koinViewModel<StoreDetailViewModel>(viewModelStoreOwner = parentEntry)
+
+                StoreDetailRoute(
+                    viewModel = viewModel,
+                    onCheckout = {
+                        appState.navController.navigate(Route.Summary)
+                    }
+                )
+            }
+
+            composable<Route.Summary> {
+                val parentEntry = remember(it) {
+                    appState.navController.getBackStackEntry(Route.Store)
+                }
+
+                val viewModel =
+                    koinViewModel<StoreDetailViewModel>(viewModelStoreOwner = parentEntry)
+
+                SummaryRoute(
+                    viewModel = viewModel,
+                    onNavigateBack = {
+                        appState.navController.popBackStack()
+                    },
+                    onOrderSuccess = {
+                        appState.navController.navigate(Route.Success) {
+                            popUpTo(Route.Store) {
+                                saveState = false
+                            }
+                        }
+                    }
+                )
+            }
+        }
+
+        composable<Route.Success> {
+            OrderSuccessRoute(
+                onBackToStore = {
+                    appState.navController.navigate(Route.Store) {
+                        popUpTo(Route.Success) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

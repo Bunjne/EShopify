@@ -95,9 +95,7 @@ fun SummaryScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            } else if (uiState.error != null) {
+            if (uiState.error != null) {
                 ErrorMessage(
                     error = uiState.error.toUiString(),
                     onRetry = onPlaceOrder
@@ -161,33 +159,6 @@ fun SummaryScreen(
                                 ),
                                 maxLines = 3
                             )
-                        }
-                    }
-
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Button(
-                            onClick = onPlaceOrder,
-                            enabled = !uiState.isLoading && uiState.deliveryAddress.isNotBlank() && uiState.selectedProducts.isNotEmpty(),
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            if (uiState.isLoading) {
-                                CircularProgressIndicator(
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            } else {
-                                Text(
-                                    text = stringResource(R.string.place_order),
-                                    modifier = Modifier.padding(vertical = 8.dp)
-                                )
-                            }
                         }
                     }
                 }

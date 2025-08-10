@@ -55,19 +55,16 @@ fun StoreDetailScreen(
     Scaffold(
         bottomBar = {
             CheckoutBottomBar(
+                modifier = Modifier.navigationBarsPadding(),
                 totalPrice = uiState.totalPrice,
                 hasSelectedProducts = uiState.hasSelectedProducts,
-                onCheckoutClick = onCheckout,
+                onCheckoutClicked = onCheckout,
             )
-        }
+        },
     ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                GeneralLoadingIndicator(modifier = Modifier.align(Alignment.Center))
             } else if (uiState.error != null) {
                 ErrorMessage(
                     error = uiState.error.toUiString(),

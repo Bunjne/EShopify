@@ -20,16 +20,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.opn.eshopify.R
 import com.opn.eshopify.domain.model.Product
+import com.opn.eshopify.domain.repository.CartRepository
 import com.opn.eshopify.presentation.store.components.CheckoutBottomBar
 import com.opn.eshopify.presentation.store.components.EmptyProductsList
 import com.opn.eshopify.presentation.store.components.ErrorMessage
 import com.opn.eshopify.presentation.store.components.ProductItem
 import com.opn.eshopify.presentation.store.components.StoreHeader
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun StoreDetailRoute(
     onCheckout: () -> Unit,
-    viewModel: StoreDetailViewModel,
+    viewModel: StoreDetailViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 

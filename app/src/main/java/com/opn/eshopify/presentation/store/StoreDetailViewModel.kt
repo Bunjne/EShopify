@@ -3,7 +3,6 @@ package com.opn.eshopify.presentation.store
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.opn.eshopify.domain.Result
-import com.opn.eshopify.domain.model.Order
 import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.presentation.util.asTextValue
 import kotlinx.coroutines.async
@@ -22,6 +21,22 @@ class StoreDetailViewModel(
 
     init {
         loadData()
+        observeCartDetails()
+    }
+
+    private fun observeCartDetails() {
+        viewModelScope.launch {
+            useCases.getCartDetail().collect { cartState ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        selectedProducts = cartState.products,
+                        deliveryAddress = cartState.deliveryAddress,
+                        totalPrice = cartState.totalPrice,
+                        hasSelectedProducts = cartState.hasProducts
+                    )
+                }
+            }
+        }
     }
 
     fun loadData() {
@@ -67,60 +82,10 @@ class StoreDetailViewModel(
     }
 
     fun incrementProductQuantity(product: Product) {
-        _uiState.update { currentState ->
-            val currentQuantity = currentState.selectedProducts[product] ?: 0
-            val updatedSelectedProducts = currentState.selectedProducts.toMutableMap().apply {
-                put(product, currentQuantity + 1)
-            }
-            currentState.copy(selectedProducts = updatedSelectedProducts)
-        }
+        useCases.addProductToCart(product)
     }
 
     fun decrementProductQuantity(product: Product) {
-        _uiState.update { currentState ->
-            val currentQuantity = currentState.selectedProducts[product] ?: 0
-            val updatedSelectedProducts = currentState.selectedProducts.toMutableMap()
-            if (currentQuantity <= 1) {
-                updatedSelectedProducts.remove(product)
-            } else {
-                updatedSelectedProducts.put(product, currentQuantity - 1)
-            }
-            currentState.copy(selectedProducts = updatedSelectedProducts)
-        }
-    }
-
-    fun updateDeliveryAddress(address: String) {
-        _uiState.update {
-            it.copy(deliveryAddress = address)
-        }
-    }
-
-    fun placeOrder() {
-        _uiState.update {
-            it.copy(
-                isLoading = true,
-                error = null
-            )
-        }
-
-        viewModelScope.launch {
-            val order = Order(
-                products = uiState.value.selectedProducts.keys.toList(),
-                deliveryAddress = uiState.value.deliveryAddress,
-            )
-            when (val result = useCases.placeOrder(order)) {
-                is Result.Success -> _uiState.update {
-                    it.copy(isOrderPlaced = true)
-                }
-
-                is Result.Error -> _uiState.update {
-                    it.copy(error = result.error.asTextValue())
-                }
-            }
-        }
-
-        _uiState.update {
-            it.copy(isLoading = false)
-        }
+        useCases.removeProductFromCart(product)
     }
 }

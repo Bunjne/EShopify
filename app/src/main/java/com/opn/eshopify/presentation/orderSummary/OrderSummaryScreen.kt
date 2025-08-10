@@ -38,17 +38,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.opn.eshopify.R
+import com.opn.eshopify.domain.repository.CartRepository
 import com.opn.eshopify.presentation.orderSummary.components.OrderProductItem
 import com.opn.eshopify.presentation.orderSummary.components.TotalPrice
 import com.opn.eshopify.presentation.store.StoreDetailUiState
-import com.opn.eshopify.presentation.store.StoreDetailViewModel
 import com.opn.eshopify.presentation.store.components.ErrorMessage
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SummaryRoute(
     onNavigateBack: () -> Unit,
     onOrderSuccess: () -> Unit,
-    viewModel: StoreDetailViewModel,
+    viewModel: OrderSummaryViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -69,7 +70,7 @@ fun SummaryRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SummaryScreen(
-    uiState: StoreDetailUiState,
+    uiState: OrderSummaryUiState,
     onNavigateBack: () -> Unit,
     onDeliveryAddressChange: (String) -> Unit,
     onPlaceOrder: () -> Unit
@@ -77,7 +78,7 @@ fun SummaryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.order_summary)) },
+                title = { Text(text = stringResource(R.string.order_summary)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -109,7 +110,7 @@ fun SummaryScreen(
                 ) {
                     item {
                         Text(
-                            text = stringResource(R.string.selected_products),
+                            text = stringResource(R.string.your_order),
                             style = MaterialTheme.typography.titleLarge
                         )
                     }
@@ -168,7 +169,7 @@ fun SummaryScreen(
 
                         Button(
                             onClick = onPlaceOrder,
-                            enabled = !uiState.isLoading && uiState.deliveryAddress.isNotBlank(),
+                            enabled = !uiState.isLoading && uiState.deliveryAddress.isNotBlank() && uiState.selectedProducts.isNotEmpty(),
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary,

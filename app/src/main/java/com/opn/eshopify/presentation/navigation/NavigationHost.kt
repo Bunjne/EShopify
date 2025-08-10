@@ -25,15 +25,7 @@ fun MainNavHost(
             startDestination = Route.StoreDetail
         ) {
             composable<Route.StoreDetail> {
-                val parentEntry = remember(it) {
-                    appState.navController.getBackStackEntry(Route.Store)
-                }
-
-                val viewModel =
-                    koinViewModel<StoreDetailViewModel>(viewModelStoreOwner = parentEntry)
-
                 StoreDetailRoute(
-                    viewModel = viewModel,
                     onCheckout = {
                         appState.navController.navigate(Route.Summary)
                     }
@@ -41,15 +33,7 @@ fun MainNavHost(
             }
 
             composable<Route.Summary> {
-                val parentEntry = remember(it) {
-                    appState.navController.getBackStackEntry(Route.Store)
-                }
-
-                val viewModel =
-                    koinViewModel<StoreDetailViewModel>(viewModelStoreOwner = parentEntry)
-
                 SummaryRoute(
-                    viewModel = viewModel,
                     onNavigateBack = {
                         appState.navController.popBackStack()
                     },

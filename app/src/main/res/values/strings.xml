@@ -26,7 +26,7 @@
     <!-- Order Summary Screen -->
     <string name="order_summary">Order Summary</string>
     <string name="navigate_back">Navigate back</string>
-    <string name="selected_products">Selected Products</string>
+    <string name="your_order">Your Order</string>
     <string name="no_products_selected">No products selected</string>
     <string name="total_price">Total Price</string>
     <string name="delivery_address">Delivery Address</string>

@@ -1,4 +1,4 @@
-package com.opn.eshopify.domain.usecase
+package com.opn.eshopify.domain.usecase.store
 
 import com.opn.eshopify.domain.DataError
 import com.opn.eshopify.domain.Result

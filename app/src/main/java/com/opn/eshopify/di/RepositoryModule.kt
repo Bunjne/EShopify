@@ -1,8 +1,10 @@
 package com.opn.eshopify.di
 
+import com.opn.eshopify.data.repository.DefaultCartRepository
 import com.opn.eshopify.data.repository.DefaultOrderRepository
 import com.opn.eshopify.data.repository.DefaultProductRepository
 import com.opn.eshopify.data.repository.DefaultStoreRepository
+import com.opn.eshopify.domain.repository.CartRepository
 import com.opn.eshopify.domain.repository.OrderRepository
 import com.opn.eshopify.domain.repository.ProductRepository
 import com.opn.eshopify.domain.repository.StoreRepository
@@ -14,4 +16,6 @@ val repositoryModule = module {
     singleOf(::DefaultStoreRepository) { bind<StoreRepository>() }
     singleOf(::DefaultProductRepository) { bind<ProductRepository>() }
     singleOf(::DefaultOrderRepository) { bind<OrderRepository>() }
+    singleOf(::DefaultCartRepository) { bind<CartRepository>() }
+
 }

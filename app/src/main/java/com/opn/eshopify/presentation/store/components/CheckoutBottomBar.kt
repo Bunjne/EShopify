@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,20 +15,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.opn.eshopify.R
+import com.opn.eshopify.presentation.designsystem.button.GeneralTextButton
 import com.opn.eshopify.presentation.util.formatCurrency
 
 @Composable
 fun CheckoutBottomBar(
     totalPrice: Double,
     hasSelectedProducts: Boolean,
-    onCheckoutClick: () -> Unit,
+    onCheckoutClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 8.dp
+        shadowElevation = 16.dp
     ) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -50,24 +48,12 @@ fun CheckoutBottomBar(
                     fontWeight = FontWeight.Bold
                 )
             }
-            
-            Button(
-                onClick = onCheckoutClick,
-                enabled = hasSelectedProducts,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.checkout),
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
+
+            GeneralTextButton(
+                onClicked = onCheckoutClicked,
+                text = stringResource(R.string.checkout),
+                isEnabled = hasSelectedProducts,
+            )
         }
     }
 }

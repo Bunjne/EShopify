@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.opn.eshopify.R
 import com.opn.eshopify.domain.model.Product
-import com.opn.eshopify.domain.repository.CartRepository
+import com.opn.eshopify.presentation.designsystem.indicator.GeneralLoadingIndicator
 import com.opn.eshopify.presentation.store.components.CheckoutBottomBar
 import com.opn.eshopify.presentation.store.components.EmptyProductsList
 import com.opn.eshopify.presentation.store.components.ErrorMessage
@@ -71,7 +71,9 @@ fun StoreDetailScreen(
                     onRetry = onRetry
                 )
             } else {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = paddingValues) {
                     uiState.store?.let { store ->
                         item {
                             StoreHeader(store = store)

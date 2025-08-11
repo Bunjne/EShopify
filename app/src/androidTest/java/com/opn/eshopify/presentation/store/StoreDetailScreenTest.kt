@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -50,7 +51,8 @@ class StoreDetailScreenTest {
             }
         }
 
-        val checkoutText = InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.checkout)
+        val checkoutText =
+            InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.checkout)
         composeRule.onNodeWithText(checkoutText).assertIsDisplayed().assertIsNotEnabled()
     }
 
@@ -81,11 +83,13 @@ class StoreDetailScreenTest {
             }
         }
 
-        composeRule.onNodeWithTag("increment_${p1.id}").assertIsDisplayed()
-        composeRule.onNodeWithTag("decrement_${p1.id}").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Increment quantity").assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Decrement quantity").assertIsDisplayed()
 
-        val checkoutText = InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.checkout)
-        composeRule.onNodeWithText(checkoutText).assertIsDisplayed().assertIsEnabled().performClick()
+        val checkoutText =
+            InstrumentationRegistry.getInstrumentation().targetContext.getString(R.string.checkout)
+        composeRule.onNodeWithText(checkoutText).assertIsDisplayed().assertIsEnabled()
+            .performClick()
 
         assert(clickedCheckout)
     }

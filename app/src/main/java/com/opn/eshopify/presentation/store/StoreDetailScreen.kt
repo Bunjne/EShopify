@@ -23,7 +23,7 @@ import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.presentation.designsystem.indicator.GeneralLoadingIndicator
 import com.opn.eshopify.presentation.store.components.CheckoutBottomBar
 import com.opn.eshopify.presentation.store.components.EmptyProductsList
-import com.opn.eshopify.presentation.store.components.ErrorMessage
+import com.opn.eshopify.presentation.designsystem.error.ErrorMessage
 import com.opn.eshopify.presentation.store.components.ProductItem
 import com.opn.eshopify.presentation.store.components.StoreHeader
 import org.koin.androidx.compose.koinViewModel

@@ -1,4 +1,4 @@
-package com.opn.eshopify.presentation.store.components
+package com.opn.eshopify.presentation.designsystem.error
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

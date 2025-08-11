@@ -34,7 +34,7 @@ import com.opn.eshopify.R
 import com.opn.eshopify.presentation.orderSummary.components.OrderProductItem
 import com.opn.eshopify.presentation.orderSummary.components.PlaceOrderBottomBar
 import com.opn.eshopify.presentation.orderSummary.components.TotalPrice
-import com.opn.eshopify.presentation.store.components.ErrorMessage
+import com.opn.eshopify.presentation.designsystem.error.ErrorMessage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

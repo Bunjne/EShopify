@@ -20,7 +20,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.opn.eshopify.InstrumentationTestRunner"
 
         buildConfigField("String", "API_URL", "\"https://c8d92d0a-6233-4ef7-a229-5a91deb91ea1.mock.pstmn.io\"")
     }
@@ -47,6 +47,19 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    packaging {
+        resources {
+            // Exclude duplicate licenses brought by junit-jupiter in androidTest
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
+        }
     }
 }
 
@@ -60,6 +73,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation.compose.testing)
     implementation(libs.bundles.coil)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization.json)

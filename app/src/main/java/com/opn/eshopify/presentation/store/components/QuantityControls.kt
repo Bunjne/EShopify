@@ -27,7 +27,7 @@ fun QuantityControls(
     modifier: Modifier = Modifier,
     quantity: Int,
     onIncrement: () -> Unit,
-    onDecrement: () -> Unit
+    onDecrement: () -> Unit,
 ) {
     val isMoreThanOne by remember(quantity) {
         derivedStateOf {
@@ -43,7 +43,7 @@ fun QuantityControls(
             PilledButton(
                 icon = if (isMoreThanOne) R.drawable.ic_minus.asImageVector() else Icons.Default.Delete,
                 onClick = onDecrement,
-                contentDescription = "Decrement quantity"
+                contentDescription = "Decrement quantity",
             )
             Text(
                 text = quantity.toString(),
@@ -55,7 +55,7 @@ fun QuantityControls(
         PilledButton(
             icon = Icons.Default.Add,
             onClick = onIncrement,
-            contentDescription = "Increment quantity"
+            contentDescription = "Increment quantity",
         )
     }
 }
@@ -65,10 +65,11 @@ private fun PilledButton(
     icon: ImageVector,
     contentDescription: String?,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .scale(0.6f)
             .background(
                 color = MaterialTheme.colorScheme.onPrimaryContainer,

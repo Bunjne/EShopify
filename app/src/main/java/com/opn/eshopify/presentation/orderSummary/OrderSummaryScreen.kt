@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -72,7 +73,10 @@ fun SummaryScreen(
             TopAppBar(
                 title = { Text(text = stringResource(R.string.order_summary)) },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(
+                        modifier = Modifier.testTag("navigate_back"),
+                        onClick = onNavigateBack
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.navigate_back)
@@ -151,7 +155,9 @@ fun SummaryScreen(
                             OutlinedTextField(
                                 value = uiState.deliveryAddress,
                                 onValueChange = onDeliveryAddressChange,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag("delivery_address_field"),
                                 label = { Text(stringResource(R.string.enter_delivery_address)) },
                                 keyboardOptions = KeyboardOptions(
                                     keyboardType = KeyboardType.Text,

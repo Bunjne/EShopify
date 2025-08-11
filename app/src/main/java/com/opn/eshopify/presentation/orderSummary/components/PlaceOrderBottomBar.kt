@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.opn.eshopify.R
@@ -25,7 +26,8 @@ fun PlaceOrderBottomBar(
         GeneralTextButton(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .testTag("place_order_button"),
             onClicked = onPlaceOrderClicked,
             text = stringResource(R.string.place_order),
             isEnabled = isEnabled,

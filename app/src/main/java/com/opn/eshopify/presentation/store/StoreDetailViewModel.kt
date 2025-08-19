@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val PAGE_SIZE = 10
+private const val FIRST_PAGE = 1
+
 class StoreDetailViewModel(
     private val useCases: StoreDetailUseCases,
 ) : ViewModel() {
@@ -43,13 +46,15 @@ class StoreDetailViewModel(
         _uiState.update {
             it.copy(
                 isLoading = true,
-                error = null
+                error = null,
+                currentPage = 1,
+                products = emptyList()
             )
         }
 
         viewModelScope.launch {
-            val storeDetailDeferred = async { useCases.getStoreDetail.invoke() }
-            val productsDeferred = async { useCases.getProducts.invoke() }
+            val storeDetailDeferred = async { useCases.getStoreDetail() }
+            val productsDeferred = async { useCases.getProducts(page = FIRST_PAGE, limit = PAGE_SIZE) }
 
             // Await all to show result at the same time
             val storeResult = storeDetailDeferred.await()
@@ -66,8 +71,15 @@ class StoreDetailViewModel(
             }
 
             when (productsResult) {
-                is Result.Success -> _uiState.update {
-                    it.copy(products = productsResult.data)
+                is Result.Success -> {
+                    val paginatedProducts = productsResult.data
+                    _uiState.update {
+                        it.copy(
+                            products = paginatedProducts.items,
+                            hasMorePages = paginatedProducts.hasNextPage,
+                            currentPage = paginatedProducts.currentPage
+                        )
+                    }
                 }
 
                 is Result.Error -> _uiState.update {
@@ -77,6 +89,75 @@ class StoreDetailViewModel(
 
             _uiState.update {
                 it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun loadMoreProducts() {
+        val currentState = _uiState.value
+        if (!currentState.canLoadMore) return
+
+        _uiState.update {
+            it.copy(
+                isLoadingMore = true,
+                paginationError = null
+            )
+        }
+
+        viewModelScope.launch {
+            val nextPage = currentState.currentPage + 1
+            when (val result = useCases.getProducts(page = nextPage, limit = PAGE_SIZE)) {
+                is Result.Success -> {
+                    val paginatedProducts = result.data
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            products = currentState.products + paginatedProducts.items,
+                            hasMorePages = paginatedProducts.hasNextPage,
+                            currentPage = paginatedProducts.currentPage,
+                            isLoadingMore = false
+                        )
+                    }
+                }
+
+                is Result.Error -> _uiState.update {
+                    it.copy(
+                        isLoadingMore = false,
+                        paginationError = result.error.asTextValue()
+                    )
+                }
+            }
+        }
+    }
+
+    fun refreshProducts() {
+        _uiState.update {
+            it.copy(
+                isRefreshing = true,
+                paginationError = null
+            )
+        }
+
+        viewModelScope.launch {
+            when (val result = useCases.getProducts(page = FIRST_PAGE, limit = PAGE_SIZE)) {
+                is Result.Success -> {
+                    val paginatedProducts = result.data
+                    _uiState.update {
+                        it.copy(
+                            products = paginatedProducts.items,
+                            hasMorePages = paginatedProducts.hasNextPage,
+                            currentPage = paginatedProducts.currentPage,
+                            isRefreshing = false,
+                            error = null
+                        )
+                    }
+                }
+
+                is Result.Error -> _uiState.update {
+                    it.copy(
+                        isRefreshing = false,
+                        paginationError = result.error.asTextValue()
+                    )
+                }
             }
         }
     }

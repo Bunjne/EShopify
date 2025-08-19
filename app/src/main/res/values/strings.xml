@@ -11,6 +11,7 @@
     <string name="error_title">Oops! Something went wrong.</string>
     <string name="store_hours_format">Open: %1$s - %2$s</string>
     <string name="retry">Retry</string>
+    <string name="loading_more_products">Loading more products...</string>
 
     <!--error messages-->
     <string name="error_no_internet">No internet connection</string>

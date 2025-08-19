@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -15,7 +16,7 @@ fun GeneralLoadingIndicator(
     strokeWidth: Dp = 2.dp,
 ) {
     CircularProgressIndicator(
-        modifier = modifier,
+        modifier = modifier.testTag("loading_indicator"),
         color = color,
         strokeWidth = strokeWidth
     )

@@ -133,11 +133,11 @@ private fun StoreWithProductsList(
         contentPadding = paddingValues
     ) {
         uiState.store?.let { store ->
-            item {
+            item(key = "store_header") {
                 StoreHeader(store = store)
             }
 
-            item {
+            item(key = "products_title") {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.products),
@@ -149,7 +149,7 @@ private fun StoreWithProductsList(
         }
 
         if (uiState.products.isEmpty() && !uiState.isLoading) {
-            item {
+            item(key = "empty_products") {
                 EmptyProductsList()
             }
         } else {
@@ -166,7 +166,7 @@ private fun StoreWithProductsList(
             }
 
             if (uiState.isLoadingMore) {
-                item {
+                item(key = "loading_more") {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -178,7 +178,7 @@ private fun StoreWithProductsList(
             }
 
             uiState.paginationError?.let { error ->
-                item {
+                item(key = "pagination_error") {
                     ErrorMessage(
                         error = error.toUiString(),
                         onRetry = onRetryLoadMore

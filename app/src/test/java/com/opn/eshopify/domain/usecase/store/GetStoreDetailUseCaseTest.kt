@@ -1,10 +1,9 @@
-package com.opn.eshopify.domain.usecase
+package com.opn.eshopify.domain.usecase.store
 
 import com.opn.eshopify.domain.DataError
 import com.opn.eshopify.domain.Result
 import com.opn.eshopify.domain.model.Store
 import com.opn.eshopify.domain.repository.StoreRepository
-import com.opn.eshopify.domain.usecase.store.GetStoreDetailUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

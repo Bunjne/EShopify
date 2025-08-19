@@ -4,24 +4,16 @@ import com.opn.eshopify.domain.DataError
 import com.opn.eshopify.domain.Result
 import com.opn.eshopify.domain.model.Cart
 import com.opn.eshopify.domain.model.Product
-import com.opn.eshopify.domain.usecase.cart.GetCartDetailUseCase
-import com.opn.eshopify.domain.usecase.cart.PlaceOrderUseCase
-import com.opn.eshopify.domain.usecase.cart.UpdateDeliveryAddressUseCase
-import com.opn.eshopify.presentation.util.TextValue
 import com.opn.eshopify.util.MainCoroutineRule
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -37,10 +29,7 @@ class OrderSummaryViewModelTest {
     val mainCoroutineDispatcher = MainCoroutineRule(StandardTestDispatcher())
 
     private lateinit var viewModel: OrderSummaryViewModel
-    private lateinit var placeOrderUseCase: PlaceOrderUseCase
-    private lateinit var getCartDetailUseCase: GetCartDetailUseCase
-    private lateinit var updateDeliveryAddressUseCase: UpdateDeliveryAddressUseCase
-    private lateinit var useCases: OrderSummaryUseCases
+    private val useCases: OrderSummaryUseCases = mockk(relaxed = true)
 
     private val testProduct1 =
         Product(id = "1", name = "Test Product 1", price = 10.0, imageUrl = "url1")
@@ -52,32 +41,21 @@ class OrderSummaryViewModelTest {
     private val testCart = Cart(
         products = testSelectedProducts,
         deliveryAddress = testAddress,
-        totalPrice = 50.0, // 10.0 + (20.0 * 2)
+        totalPrice = testSelectedProducts.entries.sumOf { it.key.price * it.value },
         hasProducts = true
     )
 
     @Before
     fun setup() {
-        placeOrderUseCase = mockk()
-        updateDeliveryAddressUseCase = mockk(relaxed = true)
-        getCartDetailUseCase = mockk {
-            every { this@mockk.invoke() } returns flow { emit(testCart) }
-        }
-
-        useCases = OrderSummaryUseCases(
-            placeOrder = placeOrderUseCase,
-            updateDeliveryAddress = updateDeliveryAddressUseCase,
-            getCartDetail = getCartDetailUseCase
-        )
-
         viewModel = OrderSummaryViewModel(useCases)
+        every { useCases.getCartDetail() } returns flow { emit(testCart) }
     }
 
     @Test
     fun `placeOrder should update state to loading and then success when order succeeds`() =
         runTest {
             // Given
-            coEvery { placeOrderUseCase() } returns Result.Success(Unit)
+            coEvery { useCases.placeOrder() } returns Result.Success(Unit)
 
             // When
             viewModel.placeOrder()
@@ -92,7 +70,7 @@ class OrderSummaryViewModelTest {
     @Test
     fun `placeOrder should update state to error when order fails`() = runTest {
         // Given
-        coEvery { placeOrderUseCase() } returns Result.Error(DataError.Network.Unknown)
+        coEvery { useCases.placeOrder() } returns Result.Error(DataError.Network.Unknown)
 
         // When
         viewModel.placeOrder()
@@ -107,12 +85,12 @@ class OrderSummaryViewModelTest {
     @Test
     fun `placeOrder should set loading true immediately`() = runTest {
         // Given
-        coEvery { placeOrderUseCase() } returns Result.Success(Unit)
+        coEvery { useCases.placeOrder() } returns Result.Success(Unit)
 
         // When
         viewModel.placeOrder()
 
-        // Then (before advancing coroutines)
+        // Then
         assertTrue(viewModel.uiState.value.isLoading)
     }
 
@@ -125,12 +103,12 @@ class OrderSummaryViewModelTest {
         viewModel.updateDeliveryAddress(newAddress)
 
         // Then
-        verify(exactly = 1) { updateDeliveryAddressUseCase(newAddress) }
+        verify(exactly = 1) { useCases.updateDeliveryAddress(newAddress) }
     }
 
     @Test
     fun `init should observe cart state and update UI state`() = runTest {
-        // Then - cart state has been observing in ViewModel's init
+        // Then
         advanceUntilIdle()
 
         assertEquals(testSelectedProducts, viewModel.uiState.value.selectedProducts)
@@ -146,17 +124,11 @@ class OrderSummaryViewModelTest {
             deliveryAddress = "999 Updated Ave",
             totalPrice = 60.0
         )
-        getCartDetailUseCase = mockk {
-            every { this@mockk.invoke() } returns flow {
-                emit(testCart)
-                emit(updatedCart)
-            }
+        every { useCases.getCartDetail() } returns flow {
+            emit(testCart)
+            emit(updatedCart)
         }
-        useCases = OrderSummaryUseCases(
-            placeOrder = placeOrderUseCase,
-            updateDeliveryAddress = updateDeliveryAddressUseCase,
-            getCartDetail = getCartDetailUseCase
-        )
+
         viewModel = OrderSummaryViewModel(useCases)
 
         // When

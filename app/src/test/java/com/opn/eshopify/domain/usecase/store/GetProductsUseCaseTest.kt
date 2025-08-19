@@ -1,10 +1,10 @@
-package com.opn.eshopify.domain.usecase
+package com.opn.eshopify.domain.usecase.store
 
 import com.opn.eshopify.domain.DataError
 import com.opn.eshopify.domain.Result
+import com.opn.eshopify.domain.model.PaginatedResult
 import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.domain.repository.ProductRepository
-import com.opn.eshopify.domain.usecase.store.GetProductsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,6 +26,17 @@ class GetProductsUseCaseTest {
         Product(id = "2", name = "Test Product 2", price = 200.0, imageUrl = "url2")
     )
 
+    private val paginatedProducts = PaginatedResult<Product>(
+        items = testProducts,
+        currentPage = 1,
+        totalPages = 3,
+        totalCount = 50,
+        hasNextPage = true
+    )
+
+    private val page = 1
+    private val limit = 10
+
     @Before
     fun setup() {
         useCase = GetProductsUseCase(mockRepository)
@@ -34,24 +45,24 @@ class GetProductsUseCaseTest {
     @Test
     fun `invoke should return success with products when repository succeeds`() = runTest {
         // Given
-        coEvery { mockRepository.getProducts() } returns Result.Success(testProducts)
+        coEvery { mockRepository.getProducts(page, limit) } returns Result.Success(paginatedProducts)
 
         // When
-        val result = useCase()
+        val result = useCase(page, limit)
 
         // Then
         assertTrue(result is Result.Success)
-        assertEquals(testProducts, (result as Result.Success).data)
+        assertEquals(testProducts, (result as Result.Success).data.items)
     }
 
     @Test
     fun `invoke should return error when repository fails`() = runTest {
         // Given
         val expectedError = DataError.Network.NoInternet
-        coEvery { mockRepository.getProducts() } returns Result.Error(expectedError)
+        coEvery { mockRepository.getProducts(page, limit) } returns Result.Error(expectedError)
 
         // When
-        val result = useCase()
+        val result = useCase(page, limit)
 
         // Then
         assertTrue(result is Result.Error)

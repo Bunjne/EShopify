@@ -1,0 +1,73 @@
+{
+    "data": {
+        "ProductResult": {
+            "PaginationInfo": {
+                "total_count": 10,
+                "current_page": 1,
+                "total_pages": 2
+            },
+            "Products": [
+                {
+                    "id": 1,
+                    "name": "Latte",
+                    "price": 95,
+                    "imageUrl": "https://www.nespresso.com/ncp/res/uploads/recipes/nespresso-recipes-Latte-Art-Tulip.jpg"
+                },
+                {
+                    "id": 2,
+                    "name": "Dark Tiramisu Mocha",
+                    "price": 95,
+                    "imageUrl": "https://www.nespresso.com/shared_res/mos/free_html/sg/b2b/b2ccoffeerecipes/listing-image/image/dark-tiramisu-mocha.jpg"
+                },
+                {
+                    "id": 3,
+                    "name": "Tropical Iced Rio",
+                    "price": 110,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/15476364836894/tropical-iced-rio.jpg"
+                },
+                {
+                    "id": 4,
+                    "name": "Vanilla Iced Matcha Latte",
+                    "price": 135,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45587298811934/Vanilla-Iced-Matcha-Latte.jpg"
+                },
+                {
+                    "id": 5,
+                    "name": "Golden Caramel Toffee Reverso",
+                    "price": 125,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45579651973150/golden-caramel-toffee-reverso.jpg"
+                },
+                {
+                    "id": 6,
+                    "name": "Paris Chocolat Noir",
+                    "price": 105,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45349018566686/paris-chocolat-noir.jpg"
+                },
+                {
+                    "id": 7,
+                    "name": "Caramello Apple Brûlée Cappuccino",
+                    "price": 130,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45378874376222/caramello-apple-brulee-cappuccino.jpg"
+                },
+                {
+                    "id": 8,
+                    "name": "Almond Reverso",
+                    "price": 110,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45579664130078/almond-reverso.jpg"
+                },
+                {
+                    "id": 9,
+                    "name": "Pumpkin Dream Latte",
+                    "price": 120,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45587301466142/Pumpkin-Dream-Latte.jpg"
+                },
+                {
+                    "id": 10,
+                    "name": "Tokyo matcha latte",
+                    "price": 110,
+                    "imageUrl": "https://www.nespresso.com/ecom/medias/sys_master/public/45380617076766/tokyo-matcha-latte.jpg"
+                }
+            ]
+        }
+    }
+}

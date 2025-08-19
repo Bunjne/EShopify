@@ -8,10 +8,12 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.platform.app.InstrumentationRegistry
 import com.opn.eshopify.R
 import com.opn.eshopify.domain.model.Product
 import com.opn.eshopify.presentation.theme.EShopifyTheme
+import com.opn.eshopify.presentation.util.TextValue
 import org.junit.Rule
 import org.junit.Test
 
@@ -46,7 +48,10 @@ class StoreDetailScreenTest {
                     onProductIncrement = {},
                     onProductDecrement = {},
                     onCheckout = {},
-                    onRetry = {}
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = {}
                 )
             }
         }
@@ -78,7 +83,10 @@ class StoreDetailScreenTest {
                     onProductIncrement = {},
                     onProductDecrement = {},
                     onCheckout = { clickedCheckout = true },
-                    onRetry = {}
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = {}
                 )
             }
         }
@@ -117,7 +125,10 @@ class StoreDetailScreenTest {
                     onProductIncrement = {},
                     onProductDecrement = {},
                     onCheckout = {},
-                    onRetry = {}
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = {}
                 )
             }
         }
@@ -147,12 +158,120 @@ class StoreDetailScreenTest {
                     onProductIncrement = {},
                     onProductDecrement = {},
                     onCheckout = {},
-                    onRetry = {}
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = {}
                 )
             }
         }
 
         composeRule.onNodeWithTag("product_1").assertIsDisplayed()
         composeRule.onNodeWithTag("product_2").assertIsDisplayed()
+    }
+
+    @Test
+    fun whenPaginationLoading_shouldShowLoadingIndicator() {
+        val products = (1..5).map { fakeProduct(it) }
+        val state = StoreDetailUiState(
+            isLoading = false,
+            error = null,
+            store = null,
+            products = products,
+            selectedProducts = emptyMap(),
+            totalPrice = 0.0,
+            hasSelectedProducts = false,
+            hasMorePages = true,
+            isLoadingMore = true
+        )
+
+        composeRule.setContent {
+            EShopifyTheme {
+                StoreDetailScreen(
+                    uiState = state,
+                    onProductIncrement = {},
+                    onProductDecrement = {},
+                    onCheckout = {},
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = {}
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("product_1").assertIsDisplayed()
+        composeRule.onNodeWithTag("loading_indicator").assertIsDisplayed()
+    }
+
+    @Test
+    fun whenPaginationError_shouldShowErrorMessageAndAbelToRetry() {
+        val products = (1..5).map { fakeProduct(it) }
+        val errorMessage = TextValue.Resource(R.string.error_no_internet)
+        val state = StoreDetailUiState(
+            products = products,
+            hasMorePages = true,
+            paginationError = errorMessage,
+        )
+
+        var retryClicked = false
+
+        composeRule.setContent {
+            EShopifyTheme {
+                StoreDetailScreen(
+                    uiState = state,
+                    onProductIncrement = {},
+                    onProductDecrement = {},
+                    onCheckout = {},
+                    onRetry = {},
+                    onLoadMore = {},
+                    onRefresh = {},
+                    onRetryLoadMore = { retryClicked = true }
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("product_1").assertIsDisplayed()
+        
+        val ctx = InstrumentationRegistry.getInstrumentation().targetContext
+        val networkError = ctx.getString(R.string.error_no_internet)
+        composeRule.onNodeWithText(networkError).assertIsDisplayed()
+        
+        val retryText = ctx.getString(R.string.retry)
+        composeRule.onNodeWithText(retryText).assertIsDisplayed().performClick()
+        
+        assert(retryClicked)
+    }
+
+    @Test
+    fun whenScrollingToEnd_shouldTriggerLoadMore() {
+        val products = (1..10).map { fakeProduct(it) }
+        var loadMoreCalled = false
+        
+        val state = StoreDetailUiState(
+            products = products,
+            hasMorePages = true,
+        )
+
+        composeRule.setContent {
+            EShopifyTheme {
+                StoreDetailScreen(
+                    uiState = state,
+                    onProductIncrement = {},
+                    onProductDecrement = {},
+                    onCheckout = {},
+                    onRetry = {},
+                    onLoadMore = { loadMoreCalled = true },
+                    onRefresh = {},
+                    onRetryLoadMore = {}
+                )
+            }
+        }
+
+        composeRule.onNodeWithTag("store_with_products_list")
+            .performScrollToIndex(products.size - 1)
+
+        composeRule.waitForIdle()
+        assert(loadMoreCalled)
     }
 }
